@@ -109,11 +109,6 @@ emotions
 chartJSRadar(emotions)
 ```
 
-<!--html_preserve-->
-<canvas id="htmlwidget-fae7457029a0fa7eb825" class="chartJSRadar html-widget" width="672" height="480">
-</canvas>
-<script type="application/json" data-for="htmlwidget-fae7457029a0fa7eb825">{"x":{"data":{"labels":["anger","anticipation","disgust","fear","joy","sadness","surprise","trust"],"datasets":[{"label":"#northkorea","data":[232,264,86,420,137,163,173,264],"backgroundColor":"rgba(255,0,0,0.2)","borderColor":"rgba(255,0,0,0.8)","pointBackgroundColor":"rgba(255,0,0,0.8)","pointBorderColor":"#fff","pointHoverBackgroundColor":"#fff","pointHoverBorderColor":"rgba(255,0,0,0.8)"},{"label":"@DPRK_News","data":[75,118,57,87,92,76,70,145],"backgroundColor":"rgba(0,255,0,0.2)","borderColor":"rgba(0,255,0,0.8)","pointBackgroundColor":"rgba(0,255,0,0.8)","pointBorderColor":"#fff","pointHoverBackgroundColor":"#fff","pointHoverBorderColor":"rgba(0,255,0,0.8)"}]},"options":{"responsive":true,"title":{"display":false,"text":null},"scale":{"ticks":{"min":0},"pointLabels":{"fontSize":18}},"tooltips":{"enabled":true,"mode":"label"},"legend":{"display":true}}},"evals":[],"jsHooks":[]}</script>
-<!--/html_preserve-->
 ![Radar Plot](https://github.com/tmbluth/Learning-Text-Analytics/blob/master/figures/North_Korea_Senitment_Analysis/small_radar.png)
 
 Above we can see the more specific emotional trends of each topic. The `@DPRK_News` is much smaller due to the fewer tweets collected on it, making the two subjects unscaled. This can be fixed.
@@ -124,11 +119,6 @@ emotions.scaled <- data.frame(Sentiment = emotions$sentiment, North_Korea = scal
 chartJSRadar(emotions.scaled)
 ```
 
-<!--html_preserve-->
-<canvas id="htmlwidget-32b18b9c83a89e4e8174" class="chartJSRadar html-widget" width="672" height="480">
-</canvas>
-<script type="application/json" data-for="htmlwidget-32b18b9c83a89e4e8174">{"x":{"data":{"labels":["anger","anticipation","disgust","fear","joy","sadness","surprise","trust"],"datasets":[{"label":"North_Korea","data":[0.912712068839457,1.03860338867938,0.338332922069799,1.65232357289902,0.538972213064679,0.641258910434618,0.680599947884595,1.03860338867938],"backgroundColor":"rgba(255,0,0,0.2)","borderColor":"rgba(255,0,0,0.8)","pointBackgroundColor":"rgba(255,0,0,0.8)","pointBorderColor":"#fff","pointHoverBackgroundColor":"#fff","pointHoverBorderColor":"rgba(255,0,0,0.8)"},{"label":"DPRK_News","data":[0.747166142794538,1.17554139799674,0.567846268523849,0.866712725641664,0.916523801827966,0.757128358031798,0.697355066608235,1.44452120940277],"backgroundColor":"rgba(0,255,0,0.2)","borderColor":"rgba(0,255,0,0.8)","pointBackgroundColor":"rgba(0,255,0,0.8)","pointBorderColor":"#fff","pointHoverBackgroundColor":"#fff","pointHoverBorderColor":"rgba(0,255,0,0.8)"}]},"options":{"responsive":true,"title":{"display":false,"text":null},"scale":{"ticks":{"min":0},"pointLabels":{"fontSize":18}},"tooltips":{"enabled":true,"mode":"label"},"legend":{"display":true}}},"evals":[],"jsHooks":[]}</script>
-<!--/html_preserve-->
 ![Scaled Radar Plot](https://github.com/tmbluth/Learning-Text-Analytics/blob/master/figures/North_Korea_Senitment_Analysis/scaled_radar.png)
 
 Now we can see which emotions each tweet source gravitates toward more evenly. I'm surprised to see posts of trust from `@DPRK_News`. As expected those talking about North Korea have high amounts of fear. Also both seem to share a heightened sense of anticipation, which seems like a very understandable emotion to be feeling as the US and the DPRK exchange threats of war.
