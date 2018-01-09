@@ -76,9 +76,9 @@ HCA <- hclust(dist.m, method = "ward.D2")
 plot(HCA, xlab = "Terms")
 ```
 
-![](Email_Clustering_files/figure-markdown_github-ascii_identifiers/HCA-1.png)
+![Dendrogram](https://github.com/tmbluth/Learning-Text-Analytics/blob/master/figures/Email_Clustering_files/HCA-1.png)
 
-NOTE: Around 2 to 5 clusters might be good to look at according to this dendrogram.
+NOTE: Dendrogram is messy due to large number of smaples. Around 2 to 5 clusters might be optimal according to this dendrogram.
 
 Several metrics have been used to assess cluster fit, and among the best are connectivity, silhouette width, and the Dunn Index. Connectivity is a measure of how connected clusters are. In clustering, you do NOT want your clusters to be well connected since it means they are difficult to distinguish, so this is a metric you want to minimize. It can span from 0 to infinity. Due to its difficulty to explain I do not prefer this metric.
 
