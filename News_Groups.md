@@ -42,30 +42,17 @@ news.clean <- VCorpus(VectorSource(news$text)) %>% clean_corpus()
 DTM <- DocumentTermMatrix(news.clean, control = list(weighting = weightTfIdf)) %>%  
                           removeSparseTerms(sparse = 0.99)
 DTM.df <- as.data.frame(as.matrix(DTM))
-
-DTM.full <- cbind(DTM.df, news$target)
-names(DTM.full)[ncol(DTM.full)] <- 'TARGET'
 ```
 
-The DTM has been cleaned and turned into a data frame. Also a column named 'TARGET' has been added, which labels the documents to their topic. This will be the label used to classify. Before moving forward with the classifiers, some descriptive statistics can help us looking into the data.
-
-Visualize
-=========
+The DTM has been cleaned and turned into a data frame. Before moving forward with the classifiers, a descriptive frequency plot can help see what some of the most used words.
 
 ``` r
 word.freq <- colSums(DTM.df, na.rm = T) %>% sort(decreasing = T)
 barplot(word.freq[1:10])
 ```
 
-![](News_Groups_files/figure-markdown_github-ascii_identifiers/VIZ-1.png)
+![Top 10](https://github.com/tmbluth/Learning-Text-Analytics/blob/master/figures/News_Groups/VIZ-1.png)
 
-``` r
-barplot(word.freq[length(word.freq)-10:length(word.freq)])
-```
-
-![](News_Groups_files/figure-markdown_github-ascii_identifiers/VIZ-2.png)
-
-Above are a few words that are the most frequent across these documents. Words like 'universe' and 'thank' are likely from religious articles, so this makes sense. Now to get on with the good stuff, classification.
 
 Classify with RTextTools
 ========================
