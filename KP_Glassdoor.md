@@ -92,7 +92,7 @@ ggplot(final.kp, aes(x = polarity, y = n)) +
        title = "Post Length vs. Net Polarity")
 ```
 
-![](KP_Glassdoor_files/figure-markdown_github-ascii_identifiers/POST%20EFFORT%20VS%20POLARITY-1.png)
+![Post Length vs Polarity](https://github.com/tmbluth/Learning-Text-Analytics/blob/master/figures/KP_Glassdoor/length_v_polarity.png)
 
 Such a correlation should concern us, since longer posts will come up as more significant and will drown out the say of shorter posts.
 
@@ -110,7 +110,7 @@ ggplot(kp.pol$all, aes(x = polarity)) +
   geom_histogram(binwidth = 0.2, fill = "indianred3", color = "black")
 ```
 
-![](KP_Glassdoor_files/figure-markdown_github-ascii_identifiers/POLARITY-1.png)
+![Polarity Distribution](https://github.com/tmbluth/Learning-Text-Analytics/blob/master/figures/KP_Glassdoor/polarity_dist.png)
 
 The posts are overwhelmingly positive with many neutral posts and only 2 (weakly) negative ones. Since dividing up the positive and negative terms would leave us with way too many positive terms and next to no negative terms I will scale these posts to adjust for the inflated level of positive posts. By doing this the mean polarity values will be the dividing line. Posts under this mean value will be considered "Less Positive" and of course the ones above the mean polarity will be considered "More Positive". Then words that appear more frequently in each will be shown in a comparison word cloud. This cloud will only show non-overlapping terms between classes. Let's check it out.
 
@@ -150,6 +150,6 @@ set.seed(1)
 comparison.cloud(tdm.m, max.words = 50, colors = c("darkgreen","darkred"))
 ```
 
-![](KP_Glassdoor_files/figure-markdown_github-ascii_identifiers/COMPARISON%20CLOUD-1.png)
+![Comparison Cloud](https://github.com/tmbluth/Learning-Text-Analytics/blob/master/figures/KP_Glassdoor/comp_cloud.png)
 
 Things like work schedule and the integrated nature of Kaiser Permanente were unique common qualities of the more positive posts. The least positive posts contain the word "managers" indicating some dissatisfaction with management. The more negative posts also included hours and time. Perhaps certain jobs within KP have hard hours while other jobs have great schedules. For those without this insider knowledge, this is a great topic for further analysis.
