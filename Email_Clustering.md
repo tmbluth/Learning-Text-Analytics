@@ -3,9 +3,9 @@ Email Clustering
 Taylor Bluth
 November 24, 2017
 
-This data set is a large set of emails (1.3 GB of text). The full amount of information isn't necessary to practice the concepts learned this week. In light of this only 1% of the data is included below.
+This data set is a large set of emails (1.3 GB of text). The full amount of information isn't necessary to practice the concepts taught below, so feel free to use less. In light of this only 1% of the data is included below.
 
-In order to preprocess emails one must use different rules of which things to take out since emails are commonly laden with hyperlinks and email addresses. Also most of the normal preprocessing must take place. Below I have incorporated these preprocessing steps and have created a DTM. This is important, because the rows are what are being clustered. In the case of DTM's they are documents. If we wanted to cluster by words then a TDM should be made here, but this is not the goal.
+In order to preprocess emails one must use different rules to remove commonly used, yet irrelevant text such as hyperlinks and email addresses. Also most of the normal preprocessing must take place. Below I have incorporated these preprocessing steps and have created a Document-Term Matrix (DTM). Its important to know this is not a Term-Document Matrix (TDM), because the rows/documents are being clustered here. If we wanted to cluster by words then a TDM should be made here, but this is not the goal.
 
 ``` r
 emails.corpus <- VCorpus(VectorSource(emails$message))
@@ -39,7 +39,7 @@ DTM
 DTM.m <- as.matrix(DTM)
 ```
 
-The DTM has been reduced and only 126 terms remain of our 5174 documents. Also the DTM is weighted by TF-IDF to reduce noise of common words in the document. LSA can also be used to reduce dimensionality into much fewer "topics" but reduces the granularity of having lots of variation in documents. This really shines when working with huge amounts of data. I will look at both the LSA and the TF-IDF-only routes. With these come the need to calculate sample distances.
+The DTM has been reduced and only 126 terms remain of our 5174 documents. Also the DTM is weighted by Term Frequency - Inverse Document Frequency (TF-IDF) to reduce noise of common words in the document. A Latent Semantic Analysis (LSA) can also be used to reduce dimensionality into much fewer "topics" but reduces the granularity of having lots of variation in documents. This really shines when working with huge amounts of data. I will look at both the LSA and the TF-IDF-only routes. With these come the need to calculate sample distances.
 
 There are a few options to calculate document vector distance between the documents in the DTM, two being cosine similarity and Euclidean distance. I have chosen to use the scaled Euclidean distances between objects since it gives more info (in my opinion) than the angle between documents. It is scaled because some documents are longer than others, meaning their term frequencies will naturally be bigger than other documents term frequencies even though the might have similar proportions of word distribution. Once scaled the distance between document vectors determines similarity. This can be especially helpful in clustering.
 
@@ -118,61 +118,42 @@ summary(validate)
     ## Dunn         0.6262 hierarchical 2       
     ## Silhouette   0.6861 hierarchical 2
 
-Its unanimous. HCA with 3 clusters is the best way to go. The three clusters will look as such.
-
-``` r
-plot(HCA, xlab = "Terms"); rect.hclust(HCA, k = 3)
-```
-
-![](Email_Clustering_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-2-1.png)
+Its unanimous. HCA with 2 clusters is the best way to go. 
 
 One can also go with the K-means algorithm using the LSA output by doing the following:
 
 ``` r
 LSA <- lsa(t(DTM)) # lsa takes TermDocumentMatrix
 
-Kmeans.docs <- kmeans(LSA$dk, 3)
+Kmeans.docs <- kmeans(LSA$dk, 2)
 table(Kmeans.docs$cluster)
 ```
 
     ## 
-    ##    1    2    3 
-    ## 4336  728  110
+    ##    1    2   
+    ## 4336  838  
 
 ``` r
-Kmeans.terms <- kmeans(LSA$tk, 3)
+Kmeans.terms <- kmeans(LSA$tk, 2)
 table(Kmeans.terms$cluster)
 ```
 
     ## 
-    ##   1   2   3 
-    ## 107   8   6
+    ##   1    2 
+    ## 107   14   
 
 ``` r
 Kmeans.terms$cluster[Kmeans.terms$cluster == 1][1:10]
 ```
 
-    ##   also    ask attach  avail   back    bcc   bill    bit   busi   call 
+    ##   also    ask attach  avail   back    bcc   bill    bit   busy   call 
     ##      1      1      1      1      1      1      1      1      1      1
 
 ``` r
 Kmeans.terms$cluster[Kmeans.terms$cluster == 2][1:10]
 ```
 
-    ## agreement     chang     chris      mike     power     price    report 
-    ##         2         2         2         2         2         2         2 
-    ##     trade      <NA>      <NA> 
-    ##         2        NA        NA
-
-``` r
-Kmeans.terms$cluster[Kmeans.terms$cluster == 3][1:10]
-```
-
-    ##           deal          email foldersdiscuss            gas           john 
-    ##              3              3              3              3              3 
-    ##         thread           <NA>           <NA>           <NA>           <NA> 
-    ##              3             NA             NA             NA             NA
-
-First the documents are clustered into 3 classes and their distribution can be seen.
-
-Then the terms are clustered into 3 classes and the distribution is seen above. We can pull 10 terms from each of the classes.
+    ## agreement    change   discuss    thread     power     price    report    trade     deal     email 
+    ##         2         2         2         2         2         2         2        2        2         2
+       
+First cluster emails into 2 classes and their distribution can be seen. Then view some terms from the classes with their class labels to see if common themes appear.
