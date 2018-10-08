@@ -18,7 +18,7 @@ dprk.news <- searchTwitter('@DPRK_News', n = 2000, since = '2017-12-07 00:00:00'
 rm(api_key, api_secret, token_key, token_secret)
 ```
 
-Of interest, as of late, is the news of North Korea. Much of the world has dubbed North Korea as a dangerous hermit state that bullies other countries and threatens its own citizens. We are obviously being fed some negative news about North Korea and are likely taking a similar sentiment ourselves. We can get a pulse on what sentiment is surrounding the topic by analyzing the posts with `#northkorea` as well as those from a satirical depiction of North Korea from `@DPRK_News`. This will allow us to see if this satirical depiction is actually similar to conversations that are likely more genuine. These were all posted on December 10th.
+Of interest, as of late, is the news of North Korea. Much of the world has dubbed North Korea as a dangerous hermit state that bullies other countries and threatens its own citizens. We are obviously being fed some negative news about North Korea and are likely taking a similar sentiment ourselves. I'll be getting a pulse on what sentiment is surrounding the topic by analyzing the posts with `#northkorea` as well as those from a satirical depiction of North Korea from `@DPRK_News`. This will allow us to see if this satirical depiction is actually similar to conversations that are likely more genuine. These were all posted on December 10th.
 
 First these tweets must be pulled and put into data frames. Each of the data frames will have retweets filtered out and will have their associated subject linked to each tweet. Then the two subjects - `#northkorea` and `@DPRK_News` - will be combined
 
@@ -56,9 +56,9 @@ tidy.tweets.count <- anti_join(tidy.tweets,
                      count(subject, word, sort = T)
 ```
 
-In this instance the AFINN lexicon will be added to our tweets. This lexicon has thousands of words with values from -5 to 5. Only the words that appear in both AFINN and our data frame will be used going forward.
+In this instance the AFINN lexicon (http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010) will be added to our tweets. This lexicon has thousands of words with values from -5 (very negative) to 5 (very positive). Only the words that appear in both AFINN and our data frame will be used during this section of analysis.
 
-We can also plot the distribution of scores in a density plot which will make a continuous probability curve of potential values that collections of documents are likely to be based off their distribution. Below are 2 density plots, one for each subject at hand. The sum of area under each curve will total to 1.
+Within each subject I pulled from Twitter I plot the distribution of scores. Below are 2 density plots, to show subject sentiment. The sum of area under each curve will total to 1.
 
 ``` r
 tweets.afinn <- inner_join(tidy.tweets.count, get_sentiments('afinn'), by = 'word') 
@@ -72,7 +72,7 @@ ggplot(tweets.afinn, aes(x = score, fill = subject)) +
 
 ![AFINN Density Plot](https://github.com/tmbluth/Learning-Text-Analytics/blob/master/figures/North_Korea_Senitment_Analysis/AFINN_density.png)
 
-On average `#northkorea` posts were quite a bit more negative while `@DPRK_News` posts were evenly negative and positive on average. While this does give a good range of feeling, it is only on one dimension. Emotion is much more than just positive or negative words. For this reason I will also use the `nrc` lexicon, which gives 8 emotions along with positive and negative. Since we already have a gist for positive and negative posts by subject they will be removed from consideration.
+On average `#northkorea` posts were quite a bit more negative while `@DPRK_News` posts were evenly negative and positive on average. While this does give a good range of feeling, it is only on one dimension. Emotion is much more than just positive or negative words. For this reason I will also use the `nrc` lexicon, which gives 8 emotions along with positive and negative. Since we already have a gist for positive and negative posts by subject they will be removed from the analysis moving forward.
 
 ``` r
 tweets.nrc <- inner_join(tidy.tweets.count, get_sentiments('nrc'), by = 'word')
